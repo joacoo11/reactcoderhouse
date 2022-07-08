@@ -1,40 +1,49 @@
 import React, { useState, useEffect} from 'react'
 import mac from '../assets/mac.jpg'
-import { InitialProducts } from './products'
-
-const promise = new Promise ((res,rej) =>{
-  setTimeout(()=> {
-    res(InitialProducts);
-  },2000)
-})
+import ItemList from './ItemList'
 
 function ItemListContainer() {
   
   const[products, setProducts] = useState([]);
+  const[error, setError] = useState(false);
   const[loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    promise 
-      .then((products) => {
-        setProducts(products);
-      })
-      .catch((error)=>{
-        console.error("error", error)
-      })
-      .finally(()=>{
-        setLoading(false);
-      })
-  }, []);
+
+  useEffect(()=> {
+    // fetch('https://fakestoreapi.com/products')
+    //   .then(res => res.json())
+    //   .then(data => setProducts(data))
+    //   .catch(err => console.error(err))
+
+    // Estas dos cosas son lo mismo
+
+    const getProducts = async () =>{
+      try {
+        const response = await fetch('https://fakestoreapi.com/products');
+        const data = await response.json();
+        setProducts(data)
+      }
+      catch(err){
+        console.log(err)
+        setError(true)
+      }
+      finally{
+        setLoading(false);  
+      }
+    }
   
+    getProducts();
+
+      
+  }, []);
+   
   return (
-    <div>
-        <div style={style.divStyle}>
-          <h1>MacBook Air</h1>
-        </div>
-        <div style={style.divStyle}>
-          <img style={style.imgStyle} src={mac} alt="mac" />
-        </div>
-    </div>
+    <>
+        {loading ? <p>Loading...</p> : 
+          error ? <p>error</p>
+            : <ItemList products={products} />
+            }
+    </>
   )
 }
 
