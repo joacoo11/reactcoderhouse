@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import ItemCount from './ItemCount'
 
 const ItemDetail = ({ product }) => {
   return (
@@ -11,6 +12,7 @@ const ItemDetail = ({ product }) => {
           <span>${product.price}</span>
           <p>{product.description}</p>
         </div>
+        <ItemCount />
         <Link to="/cart">
           <button>Finalizar compra</button>
         </Link>

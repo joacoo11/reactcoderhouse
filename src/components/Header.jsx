@@ -1,11 +1,12 @@
 import React from 'react'
 import logo from '../assets/logo.png'
 import CartWidget from './CartWidget'
+import { Link } from 'react-router-dom'
 
 function Header() {
   return (
     <header style={style.header}>
-        <img style={style.imgStyle} src={logo} alt='logo' />
+        <Link to='/'><img style={style.imgStyle} src={logo} alt='logo' /></Link>
         <nav style={style.navStyle}>
             <a style={style.anchors} href="/">Store</a>
             <a style={style.anchors} href="/">IPhone</a>
