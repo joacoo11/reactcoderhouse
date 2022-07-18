@@ -4,6 +4,8 @@ import Header from './components/Header';
 import ItemListContainer from './components/ItemListContainer';
 import ItemDetailsContainer from './components/ItemDetailsContainer';
 import Cart from './components/Cart'
+import CartCustomProvider from './components/CartContext'
+
 
 import {
   BrowserRouter,
@@ -14,6 +16,7 @@ import {
 function App() {
   return (
     <BrowserRouter>
+    <CartCustomProvider > 
       <Header />
       <Routes>
         <Route path="/" element={<ItemListContainer/>} />
@@ -21,6 +24,7 @@ function App() {
         <Route path="/product/:productId" element={<ItemDetailsContainer />}/>
         <Route path="/cart" element={<Cart />} />
       </Routes>
+    </CartCustomProvider>
     </BrowserRouter>
     
   );
