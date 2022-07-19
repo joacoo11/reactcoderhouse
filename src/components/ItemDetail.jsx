@@ -9,7 +9,8 @@ const ItemDetail = ({ product }) => {
   const { addProduct } = useContext(cartContext)
 
   const onAdd = (count) => {
-    addProduct({...product, qty: count})
+    addProduct({...product, qty: count});
+    setBuyFinalized(true);
   }
 
   return (
