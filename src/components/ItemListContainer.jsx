@@ -2,8 +2,11 @@ import React, { useEffect, useState } from 'react'
 import CircularProgress from '@mui/material/CircularProgress';
 import ItemList from './ItemList';
 import { useParams } from 'react-router-dom';
+import { db } from './Firebase'
+import { getDocs, collection } from "firebase/firestore"
 
-export const ItemListContainer = ({ greeting }) => {
+
+export const ItemListContainer = () => {
 
     const [products, setProducts] = useState([]);
     const [loaded, setLoaded] = useState(true);
@@ -12,20 +15,23 @@ export const ItemListContainer = ({ greeting }) => {
 
 
 
-    useEffect(() => {
-        const URL = categoryId
-            ? `https://fakestoreapi.com/products/category/${categoryId}`
-            : 'https://fakestoreapi.com/products'
-        fetch(URL)
-            .then(res => res.json())
-            .then(data => setProducts(data))
-            .catch(err => console.log(err))
-            .finally(() => setLoaded(false))
-    }, [categoryId]);
+    useEffect (() => {
+        const productCollection = collection(db, "Products");
+        getDocs(productCollection)
+        .then(result => {
+            const lista = result.docs.map(doc => {
+                return {
+                    id: doc.id,
+                    ...doc.data(),
+                }
+            })
+            setProducts(lista)
+            setLoaded(false)
+        })
+    }, [])
 
     return (
         <>
-            <h1>{greeting}</h1>
             {loaded ? <CircularProgress color="success" /> : <ItemList products={products} />}
         </>
     )
